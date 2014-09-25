@@ -2,6 +2,7 @@ console.log("javascript working!"); // Just to test.
 $(document).ready(function() {
 
   var getIt = function(response) {
+    //$("#list").empty();
     // If you don't understand line 6, you may want to read up
     // on Javascript objects, in the slides or internet. 
     var stories = response.data.children;
