@@ -3,8 +3,23 @@ $(document).ready(function() {
   loadReddit();
   $("#refresh").click(function() {
     // Ex. 1: Refresh Refresher code here
-    // Hint: it's one line. 
-    // ...
+      var d = new Date();
+
+      var month = d.getMonth()+1;
+      var day = d.getDate();
+      var seconds = d.getSeconds();
+      var hours = d.getHours();
+      var minutes = d.getMinutes();
+
+      var output = 
+          (month<10 ? '0' : '') + month + '/' +
+          (day<10 ? '0' : '') + day + '/' + d.getFullYear() + ' at ' + hours + '.' + minutes + '.' + seconds;
+
+
+    loadReddit();
+    $('#refreshed').empty().append('Last refreshed: ' + output.toString());
+    console.log(output.toString());
+    person.miniBio();
   });
 
   $(window).mousemove(function(e) {
@@ -12,8 +27,8 @@ $(document).ready(function() {
 
     // You can change the css of an element with the .css function—
     //   look up the documentation for it on jQuery.com!
-    // $("#follow-dot").css({ ... });
-    // console.log(e.pageX, e.pageY); // Just to see what's going on. 
+    $(document).mousemove(function(e){
+    $("#follow-dot").stop().animate({left:e.pageX, top:e.pageY}); }); // Just to see what's going on. 
     // Optionally, add a delay. Hint: look up the setTimeout function!
   });
 
@@ -22,27 +37,29 @@ $(document).ready(function() {
 
 // Ex. 2: Objectify Me code here
 // An example person
-// var rafi = {
-//   fname: ...
-//   lname: ...
-//   favoriteCereal: ...
-//   interests: ... 
-//   fullname: function() {
-//     // Make sure to use `this`
-//     // return ...
-//   },
-//   miniBio: function() {
-//     toPrint = "Hi my name is " + ...
-//     // "toPrint += X" is a shortcut for "toPrint = toPrint + X"
-//     toPrint += " and my favorite cereal is " + ...
-//     toPrint += "In my free time, I like to ";
-//     for (var i in this.interests) {
-//       toPrint += ...
-//     }
-//     console.log(toPrint);
-//     return toPrint;
-//   }
-// }
+var person = {
+  fname: "Joe",
+  lname: "Calamia",
+  favoriteCereal: "Cracklin Oat Bran",
+  interests: ['cycling', 'nature', 'animated gifs', 'reading', 'Scott Pilgrim vs. the World'],
+  
+  fullname: function() {
+    // Make sure to use `this`
+    return this.fname + ' ' + this.lname;
+  },
+
+  miniBio: function() {
+    toPrint = "Hi my name is " + this.fullname() + ', ';
+    // "toPrint += X" is a shortcut for "toPrint = toPrint + X"
+    toPrint += "and my favorite cereal is " + this.favoriteCereal + '. ';
+    toPrint += "In my free time, I like: ";
+    for (var i in this.interests) {
+      toPrint += this.interests[i] + ', '
+    }
+    console.log(toPrint + '.');
+    return toPrint + '.';
+  }
+}
 
 // Gets data from Reddit
 var loadReddit = function() {
@@ -50,15 +67,14 @@ var loadReddit = function() {
   $.get("http://www.reddit.com/hot.json", function(response) {
     $("#list").empty(); // Empty all the stuff in the list first.
     var stories = response.data.children;
+    var counter = 1;
     for(var i in stories) { // For each story
       story = stories[i].data; // Get the actual object of the story
-      var elem = $("<li></li>"); // Create an empty list element
-      // Create a link inside a paragraph
-      $(elem).append("<p><a href='http://reddit.com" + story.permalink +
-        "'>" + story.title + "</a> (" + story.score + "points)</p>");
-      // Add the story thumbnail as an <img> tag
-      $(elem).append("<img src='" + story.thumbnail + "'>");
-      // Add the newly created element to the list
+      var elem = $("<div class='item' ></div>"); // Create an empty list element
+      // // Create a link inside a paragraph
+      $(elem).append("<div style='text-align: center; height: 300px; background: url(" + story.thumbnail + ") no-repeat center;'><a href='http://reddit.com" + story.permalink +
+        "'>" + counter.toString() + '. ' + story.title + "</a> (" + story.score + "points)</div>");
+      counter = counter + 1;
       $("#list").append(elem);
     }
   });
@@ -71,16 +87,20 @@ var getFB = function() {
     method: "get", // Using GET
     url: "https://graph.facebook.com/me", // Get my own info
     data: {
-      fields: "...", // What goes here? 
+      fields: "id, name, gender, picture.url, cover.source", // What goes here? 
       // Access token obtained at https://developers.facebook.com/tools/explorer
       // Note that it expires after a while, so you occasionally need to go back
       //   and get another one. 
-      access_token: "CAACEdEose0cBAK0ILXnxSN8TSvCqvKtFroh7vzMzB7tZBL00z9hneo0g1AusC1NkUtVnBo8pW51GdKn26YoNFqtLeuBc849SusuUzxZCxyDvB2gjFI2iZCmpeYngbvajE610H7R8buek4ZBBLynQ2ARPiHndjQrfLCBnhyqZAAtuJp7L0ubaijFkgyg7p1GH9h8UA68Kj1ZBXVaCQ1p0xC"
+      access_token: "CAACEdEose0cBAN6KbNquNFZCb4lwol9qpeiWCGbsjk36oTn9p8SVuJnzTArpnZBPPNBe3rAAAZAF3CShSpsVpI50kE0gkjeutY4DXwapNeML1eyYmlRXhIjKDFtkyqocGdCz4ZAfeoNneGUa3Ix4k4ziXV5yF9B83pHwCp14lWzqfSnZCtsBTmgTNKgqoUgmmEMgFFQeFSS304F67tJHU"
     },
     success: function(response) {
       console.log(response);
       // Write code to display the name and userID on the page here.
       // If you got the profile picture, make it show up in an <img> tag
+      
+      var profileurl = response.picture.data.url;
+      $("#photo").append("<div style='height: 200px; background-image: url(" + profileurl.toString() + ")'></div>" );
+      $("#welcome").append("Hello, "+ response.name + ", better known as " + response.id + ".");
     }, 
     error: function(jxqr, text) {
       console.log(jxqr, text);
@@ -90,3 +110,4 @@ var getFB = function() {
     }
   });
 };
+
