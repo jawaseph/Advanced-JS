@@ -3,11 +3,37 @@
   <!-- Make sure to include jQuery *before* your own Javascript -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="./script.js"></script>
+   <title>Top Reddit Stories</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+   <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
   <div id="follow-dot" style="position: absolute; width: 20px; height: 20px; border-radius: 10px; background-color: blue;"></div>
-  <h1>Top Reddit Stories:</h1>
-  <button id="refresh" style="float: right;">Refresh</button>
-  <ul id="list"></ul>
+  <h1>Top Reddit Stories</h1>
+  <h2 id="welcome"></h2>
+  <br>
+  <button id="refresh">Refresh</button>
+  <div id="refreshed"></div>
+  <br>
+  <div id="photo"></div>
+  <br>
+  <div id="myCarousel" class="carousel slide">
+ <!--  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol> -->
+  <!-- Carousel items -->
+  <div class="carousel-inner" style="color: white; text-shadow: white 0.2em 0.2em 0.3em" id="list">
+    
+  </div>
+  <!-- Carousel nav -->
+  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+  </div>
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>
