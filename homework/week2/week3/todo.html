@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ToDo!</title>
+ 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+ 	<script src="./todo.js"></script>
+</head>
+<body ng-app="Todo">
+	<div ng-controller="TodoCtrl">
+		<!-- Creat a varialble called todoList [a,b,c] -->
+		<ul>
+			<li ng-repeat="item in todoList">
+			 {{item}}
+			</li>
+		</ul>
+		<input type="text" ng-model="newActivity">
+		<button ng-click="newTodo()">Add</button>
+	</div>
+</body>
+</html>
